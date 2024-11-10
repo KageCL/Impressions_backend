@@ -10,8 +10,8 @@ app.get("/",(req, res)=>{
 });
 
 app.get("/api/dresses", (req, res) =>{
-    const dresses = [
-        {
+    
+    const dresses =   {
             "dresses": [
               {
                 "_id": 1,
@@ -139,14 +139,14 @@ app.get("/api/dresses", (req, res) =>{
                     "Purple/Red"]
               }
             ]
-          }        
-    ];
+          };        
+    
     res.send(dresses);
     
 });
 
 app.get("/api/outfits", (req, res) =>{
-    const outfits = [
+    const outfits = 
         {
             "outfits": [
               {
@@ -279,14 +279,13 @@ app.get("/api/outfits", (req, res) =>{
                     "Blue"]
               }
             ]
-          }
+          };
           
-    ];
     res.send(outfits); 
 });
 
 app.get("/api/rompers", (req, res) =>{
-    const rompers = [
+    const rompers = 
         {
             "rompers": [
               {
@@ -408,14 +407,13 @@ app.get("/api/rompers", (req, res) =>{
                     "Orange"]
               }
             ]
-          }
+          };
           
-    ];
     res.send(rompers); 
 });
 
 app.get("/api/leggings", (req, res) =>{
-    const leggings = [
+    const leggings = 
         {
             "jeggings": [
               {
@@ -537,14 +535,13 @@ app.get("/api/leggings", (req, res) =>{
                     "Dark Print"]
               }
             ]
-          }
+          };
           
-    ];
     res.send(leggings); 
 });
 
 app.get("/api/shorts", (req, res) =>{
-    const shorts = [
+    const shorts = 
         {
             "shorts": [
               {
@@ -659,14 +656,13 @@ app.get("/api/shorts", (req, res) =>{
                     "Rainbow"]
               }
             ]
-          }
+          };
           
-    ];
     res.send(shorts); 
 });
 
 app.get("/api/skorts", (req, res) =>{
-    const skorts = [
+    const skorts = 
         {
             "skorts": [
               {
@@ -790,14 +786,13 @@ app.get("/api/skorts", (req, res) =>{
                     "Tan"]
               }
             ]
-          }
+          };
           
-    ];
     res.send(skorts); 
 });
 
 app.get("/api/dragon", (req, res) =>{
-    const dragon = [
+    const dragon = 
         {
             "dragon": [
               {
@@ -841,14 +836,13 @@ app.get("/api/dragon", (req, res) =>{
                     "Teen Gohan"]
               }
             ]
-          }
+          };
           
-    ];
     res.send(dragon); 
 });
 
 app.get("/api/naruto", (req, res) =>{
-    const naruto = [
+    const naruto = 
         {
             "naruto": [
               {
@@ -891,14 +885,13 @@ app.get("/api/naruto", (req, res) =>{
                     "Deva Pain"]
               }
             ]
-          }
+          };
           
-    ];
     res.send(naruto); 
 });
 
 app.get("/api/jujutsu", (req, res) =>{
-    const jujutsu = [
+    const jujutsu = 
         {
             "jujutsu": [
               {
@@ -940,14 +933,13 @@ app.get("/api/jujutsu", (req, res) =>{
                     "Megumi"]
               }
             ]
-          }
+          };
           
-    ];
     res.send(jujutsu); 
 });
 
 app.get("/api/inside", (req, res) =>{
-    const inside = [
+    const inside = 
         {
             "inside_out": [
               {
@@ -987,14 +979,13 @@ app.get("/api/inside", (req, res) =>{
                     "Sadness"]
               }
             ]
-          }
+          };
           
-    ];
     res.send(inside); 
 });
 
 app.get("/api/turtle", (req, res) =>{
-    const turtle = [
+    const turtle = 
         {
             "turtles": [
               {
@@ -1034,14 +1025,13 @@ app.get("/api/turtle", (req, res) =>{
                     "Donatello"]
               }
             ]
-          }
+          };
           
-    ];
     res.send(turtle); 
 });
 
 app.get("/api/powerpuff", (req, res) =>{
-    const powerpuff = [
+    const powerpuff =
         {
             "powerpuff": [
               {
@@ -1081,9 +1071,8 @@ app.get("/api/powerpuff", (req, res) =>{
                     "Mojo Jojo"]
               }
             ]
-          }
+          };
           
-    ];
     res.send(powerpuff); 
 });
 app.listen(3001, () => {
