@@ -2,13 +2,30 @@ h1{
     color: black;
     background: #B886F8;
     text-align: center;
+    margin: 0px;
+    padding: 5px;
+
 }
 
+body{
+    margin: 0px;
+}
 h2{
     text-align: center;
     background: whitesmoke;
+    margin: 0px;
+    padding: 5px;
+}
+
+h2:hover{
+    background: #B886F8;
 }
 
 a{
     text-decoration: none;
+    color: black;
+}
+
+a:hover{
+    color: whitesmoke;
 }
