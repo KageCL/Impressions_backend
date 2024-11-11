@@ -1,3 +1,14 @@
 h1{
-    color: red;
+    color: black;
+    background: #B886F8;
+    text-align: center;
+}
+
+h2{
+    text-align: center;
+    background: whitesmoke;
+}
+
+a{
+    text-decoration: none;
 }
