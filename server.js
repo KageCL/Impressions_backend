@@ -1,9 +1,26 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const Joi = require("joi");
+const multer = require("multer");
+
 
 app.use(express.static("public"));
+app.use("/uploads", express.static("uploads"));
+app.use(express.json());
 app.use(cors());
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "./public/images/");
+    },
+    filename: (req, file, cb) =>{
+        cb(null, file.originalname);
+    },
+});
+
+const upload = multer({storage: storage});
 
 app.get("/",(req, res)=>{
     res.sendFile(__dirname + "/index.html");
@@ -11,7 +28,7 @@ app.get("/",(req, res)=>{
 
 app.get("/api/dresses", (req, res) =>{
     
-    const dresses =   {
+    let dresses =   {
             "dresses": [
               {
                 "_id": 1,
@@ -1075,6 +1092,38 @@ app.get("/api/powerpuff", (req, res) =>{
           
     res.send(powerpuff); 
 });
+
+app.post("/api/dresses", upload.single("img"), (req, res) =>{
+    const result = validateDress(req.body);
+
+    if(result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+    const dress = {
+        _id: dresses.length + 1,
+        name: req.body.name,
+        description: request.body.description,
+    };
+
+    if (req.file){
+        dress.image = "images/" + req.file.filename;
+    }
+
+    dresses.push(dress);
+    res.status(200).send(dress);
+});
+
+const validateDress = (dress) =>{
+    const schema = Joi.object({
+        _id: Joi.allow(""),
+        name: Joi.string().required(),
+        description: Joi.string().required(),
+    });
+
+    return schema.validate(dress);
+};
+
 app.listen(3001, () => {
     console.log("I'm listening");
 });
