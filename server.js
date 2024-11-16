@@ -26,8 +26,7 @@ app.get("/",(req, res)=>{
     res.sendFile(__dirname + "/index.html");
 });
 
-let dresses =   {
-    "dresses": [
+let dresses = [
       {
         "_id": 1,
         "name": "Butterfly Dress",
@@ -153,9 +152,8 @@ let dresses =   {
             "Black/Purple",
             "Purple/Red"]
       }
-    ]
-  };        
-  
+    ];        
+
 app.get("/api/dresses", (req, res) =>{
     
     res.send(dresses);
