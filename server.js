@@ -1103,7 +1103,7 @@ app.post("/api/dresses", upload.single("img"), (req, res) =>{
     const dress = {
         _id: dresses.length + 1,
         name: req.body.name,
-        description: request.body.description,
+        description: req.body.description,
     };
 
     if (req.file){
