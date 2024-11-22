@@ -823,7 +823,7 @@ app.put("/api/items/:id", upload.single("img"), (req, res) => {
 });
 
 app.delete("/api/dresses/:id", (req, res) => {
-  const item = items.find((item) => item._id === parseInt(req.params.id));
+  const item = item.find((item) => item._id === parseInt(req.params.id));
   if (!item) {
     res.status(404).send("The item with the provided id was not found");
     return;
