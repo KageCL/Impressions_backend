@@ -1112,6 +1112,9 @@ app.post("/api/dresses", upload.single("img"), (req, res) =>{
     res.status(200).send(dress);
 });
 
+app.put("/api/items/:id", upload.single("img"), (req, res) => { const item = items.find((item) => item._id === parseInt(req.params.id)); if (!item) { res.status(404).send("The item with the provided id was not found"); return; } const result = validateItem(req.body); if (result.error) { res.status(400).send(result.error.details[0].message); return; } item.name = req.body.name; item.description = req.body.description; if (req.file) { item.image = req.file.filename; } res.status(200).send(item); });
+app.delete("/api/items/:id", (req, res) => { const item = items.find((item) => item._id === parseInt(req.params.id)); if (!item) { res.status(404).send("The item with the provided id was not found"); return; } const index = items.indexOf(item); items.splice(index, 1); res.status(200).send(item); });
+
 const validateDress = (dress) =>{
     const schema = Joi.object({
         _id: Joi.allow(""),
