@@ -823,14 +823,14 @@ app.put("/api/items/:id", upload.single("img"), (req, res) => {
 });
 
 app.delete("/api/dresses/:id", (req, res) => {
-  const item = item.find((item) => item._id === parseInt(req.params.id));
+  const item = dresses.find((i) => i._id === parseInt(req.params.id));
   if (!item) {
     res.status(404).send("The item with the provided id was not found");
     return;
   }
 
-  const index = items.indexOf(item);
-  items.splice(index, 1);
+  const index = dresses.indexOf(item);
+  dresses.splice(index, 1);
   res.status(200).send(item);
 });
 
