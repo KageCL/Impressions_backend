@@ -803,13 +803,13 @@ app.post("/api/dresses", upload.single("img"), (req, res) => {
   res.status(200).send(dress);
 });
 
-app.put("/api/items/:id", upload.single("img"), (req, res) => {
-  const item = items.find((item) => item._id === parseInt(req.params.id));
+app.put("/api/dresses/:id", upload.single("img"), (req, res) => {
+  const item = dresses.find((i) => i._id === parseInt(req.params.id));
   if (!item) {
     res.status(404).send("The item with the provided id was not found");
     return;
   }
-  const result = validateItem(req.body);
+  const result = validateDress(req.body);
   if (result.error) {
     res.status(400).send(result.error.details[0].message);
     return;
@@ -817,7 +817,7 @@ app.put("/api/items/:id", upload.single("img"), (req, res) => {
   item.name = req.body.name;
   item.description = req.body.description;
   if (req.file) {
-    item.image = req.file.filename;
+    item.image = "images/" + req.file.filename;
   }
   res.status(200).send(item);
 });
@@ -829,7 +829,10 @@ app.delete("/api/dresses/:id", (req, res) => {
     return;
   }
 
+  console.log(item);
   const index = dresses.indexOf(item);
+  console.log(index);
+
   dresses.splice(index, 1);
   res.status(200).send(item);
 });
