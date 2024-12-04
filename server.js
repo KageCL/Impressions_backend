@@ -8,6 +8,7 @@ app.use(express.static("public"));
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 app.use(cors());
+const mongoose = require("mongoose");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -20,92 +21,26 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+mongoose
+  .connect("mongodb+srv://PWI8lEBNhsCNHrfx:PWI8lEBNhsCNHrfx@impressionsdb.a0zqt.mongodb.net/?retryWrites=true&w=majority&appName=impressionsDB")
+  .then(() => {console.log("Connected to mongodb...")})
+  .catch((err) => {console.error("Could not connect to MongoDB...", err)});
+
+
+  const dressSchema = new mongoose.Schema({
+    name: String,
+    description: String
+  });
+
+  const Dress = mongoose.model("Dress", dressSchema);
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-let dresses = [
-  {
-    _id: 1,
-    name: "Butterfly Dress",
-    price: 16.0,
-    description:
-      "Plain color dresses with butterfly prints starting at the bottom and going to the top.",
-    image: "images/butterfly-dress.jpg",
-    sizes: ["S", "M", "L", "XL"],
-    designs: ["Navy Blue", "Black", "White"],
-  },
-  {
-    _id: 2,
-    name: "Plain Dress",
-    price: 16.0,
-    description: "A simple plain dress with golden beads and bands.",
-    image: "images/plain-dress.JPG",
-    sizes: ["S", "M", "L"],
-    designs: ["Navy Blue", "Red", "Black"],
-  },
-  {
-    _id: 3,
-    name: "Sunflower Dress",
-    price: 16.0,
-    description:
-      "Different color dresses with large yellow sunflowers around it.",
-    image: "images/sunflower-dress.jpg",
-    sizes: ["M", "L", "XL"],
-    designs: ["Navy Blue", "Red", "White", "Black"],
-  },
-  {
-    _id: 4,
-    name: "Flower Dress",
-    price: 16.0,
-    description:
-      "Dresses with many small flowers and no plain design on the dress.",
-    image: "images/flower-dress.JPG",
-    sizes: ["M", "L", "XL"],
-    designs: ["Blue", "Teal", "Black"],
-  },
-  {
-    _id: 5,
-    name: "Wheat Dress",
-    price: 16.0,
-    description:
-      "Plain color dresses with wheat designs on the bottom and on the sleeves.",
-    image: "images/wheat-dress.jpg",
-    sizes: ["S", "M", "L", "XL"],
-    designs: ["Blue", "Yellow", "Red"],
-  },
-  {
-    _id: 6,
-    name: "Sea Floral Dress",
-    price: 16.0,
-    description:
-      "Black dresses with different color floral prints on the bottom and torso areas.",
-    image: "images/sea-floral-dress.jpg",
-    sizes: ["M", "L", "XL"],
-    designs: ["Dark Blue", "Red", "Purple", "Blue"],
-  },
-  {
-    _id: 7,
-    name: "Fancy Dress",
-    price: 16.0,
-    description: "Fancy dresses with unique design patterns throughout.",
-    image: "images/fancy-dress.jpg",
-    sizes: ["M", "L", "XL"],
-    designs: ["Purple", "Blue", "Red", "Black"],
-  },
-  {
-    _id: 8,
-    name: "Rose Dress",
-    price: 16.0,
-    description:
-      "Flowy dresses with two large different color roses on the front.",
-    image: "images/rose-dress.jpg",
-    sizes: ["M", "L", "XL"],
-    designs: ["Blue/Pink", "Black/Purple", "Purple/Red"],
-  },
-];
 
-app.get("/api/dresses", (req, res) => {
+app.get("/api/dresses", async(req, res) => {
+  const dresses = await Dress.find();
   res.send(dresses);
 });
 
@@ -782,59 +717,54 @@ app.get("/api/powerpuff", (req, res) => {
   res.send(powerpuff);
 });
 
-app.post("/api/dresses", upload.single("img"), (req, res) => {
+app.post("/api/dresses", upload.single("img"), async(req, res) => {
   const result = validateDress(req.body);
 
   if (result.error) {
     res.status(400).send(result.error.details[0].message);
     return;
   }
-  const dress = {
-    _id: dresses.length + 1,
-    name: req.body.name,
-    description: req.body.description,
-  };
+
+  const dress = new Dress({
+    name:req.body.name,
+    description:req.body.description
+  });
 
   if (req.file) {
     dress.image = "images/" + req.file.filename;
   }
 
-  dresses.push(dress);
-  res.status(200).send(dress);
+  const newDress = await dress.save();
+  res.status(200).send(newDress);
 });
 
-app.put("/api/dresses/:id", upload.single("img"), (req, res) => {
-  const item = dresses.find((i) => i._id === parseInt(req.params.id));
-  if (!item) {
-    res.status(404).send("The item with the provided id was not found");
-    return;
-  }
+app.put("/api/dresses/:id", upload.single("img"), async(req, res) => {
   const result = validateDress(req.body);
+
   if (result.error) {
     res.status(400).send(result.error.details[0].message);
     return;
   }
-  item.name = req.body.name;
-  item.description = req.body.description;
+
+  const fieldsToUpdate = {
+    name:req.body.name,
+    description:req.body.description
+  };
+
   if (req.file) {
     item.image = "images/" + req.file.filename;
   }
-  res.status(200).send(item);
+
+  const wentThrough = await Dress.updateOne({_id:req.params.id}, fieldsToUpdate);
+
+  const dress = await Dress.findOne({_id:req.params.id});
+  res.status(200).send(dress);
 });
 
-app.delete("/api/dresses/:id", (req, res) => {
-  const item = dresses.find((i) => i._id === parseInt(req.params.id));
-  if (!item) {
-    res.status(404).send("The item with the provided id was not found");
-    return;
-  }
-
-  console.log(item);
-  const index = dresses.indexOf(item);
-  console.log(index);
-
-  dresses.splice(index, 1);
-  res.status(200).send(item);
+app.delete("/api/dresses/:id", async(req, res) => {
+  const dress = await Dress.findByIdAndDelete(req.params.id);
+  
+  res.status(200).send(dress);
 });
 
 const validateDress = (dress) => {
