@@ -753,7 +753,7 @@ app.put("/api/dresses/:id", upload.single("img"), async(req, res) => {
   };
 
   if (req.file) {
-    dress.image = "images/" + req.file.filename;
+    fieldsToUpdate.image = "images/" + req.file.filename;
   }
 
   const wentThrough = await Dress.updateOne({_id:req.params.id}, fieldsToUpdate);
