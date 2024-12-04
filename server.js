@@ -29,7 +29,8 @@ mongoose
 
   const dressSchema = new mongoose.Schema({
     name: String,
-    description: String
+    description: String,
+    image: String
   });
 
   const Dress = mongoose.model("Dress", dressSchema);
@@ -752,7 +753,7 @@ app.put("/api/dresses/:id", upload.single("img"), async(req, res) => {
   };
 
   if (req.file) {
-    item.image = "images/" + req.file.filename;
+    dress.image = "images/" + req.file.filename;
   }
 
   const wentThrough = await Dress.updateOne({_id:req.params.id}, fieldsToUpdate);
