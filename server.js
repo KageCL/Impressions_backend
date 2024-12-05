@@ -740,9 +740,14 @@ app.post("/api/dresses", upload.single("img"), async(req, res) => {
 });
 
 app.put("/api/dresses/:id", upload.single("img"), async(req, res) => {
+
+  console.log("I am here");
+
   const result = validateDress(req.body);
 
   if (result.error) {
+
+    console.log("I am error.");
     res.status(400).send(result.error.details[0].message);
     return;
   }
@@ -757,7 +762,7 @@ app.put("/api/dresses/:id", upload.single("img"), async(req, res) => {
   }
 
   const wentThrough = await Dress.updateOne({_id:req.params.id}, fieldsToUpdate);
-
+  console.log("I am here 2");
   const dress = await Dress.findOne({_id:req.params.id});
   res.status(200).send(dress);
 });
